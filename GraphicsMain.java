@@ -10,7 +10,7 @@ public class GraphicsMain extends JFrame{
 		GraphicsMain window = new GraphicsMain();
 	    JPanel p = new JPanel();
 	    p.add(new GraphicsPanel()); 
-	    window.setTitle("Chess");
+	    window.setTitle("Pennyslvania Casino");
 	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    window.setContentPane(p);
 	    window.pack();
