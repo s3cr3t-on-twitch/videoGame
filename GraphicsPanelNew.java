@@ -6,6 +6,7 @@
 //
 // Since you will modify this class you should add comments that describe when and how you modified the class.  
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,14 +19,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
 	private final int OFFSET = 5;
-	// private Location from;   			    //NLC
-	// private Location to;   				    // no location class
 	private boolean click;   				// false until the game has started by somebody clicking on the board.  should also be set to false
-	                         				// after an attempted move.
-	private int turn;						// used to keep track of who's turn it is - should only be 1 or 2.
+	private Rectangle roulette;  
+	private Rectangle plinko;      
+	private Rectangle blackjack;  
+	boolean mainMenu = true;
+	boolean rouletteChoice = false;
 	
 	public GraphicsPanel(){
-	
+		setPreferredSize(new Dimension(SQUARE_WIDTH*8+OFFSET*2,SQUARE_WIDTH*8+OFFSET*2));   // Set these dimensions to the width 	
+        addMouseListener(this);
+		roulette = new Rectangle(100, 500, 100,100);
+		plinko = new Rectangle(300, 500, 100,100);
+		blackjack = new Rectangle(500, 500, 100,100);
+
 	}
 	
 	// method: paintComponent
@@ -33,15 +40,52 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	//   			first rendered.  It can also be called by this.repaint()
 	// parameters: Graphics g - This object is used to draw your images onto the graphics panel.
 	public void paintComponent(Graphics g){
+		Color darkRed = new Color(148, 34, 40); // Color dark red
 		Graphics2D g2 = (Graphics2D) g;
-	
+		//if mainMenu is true, and this.repaint is triggered, will print the main menu.
+		if (mainMenu == true) {
+		g2.setColor(darkRed);
+		g2.fillRect(-10, -10, 10000, 10000);
+		g2.setColor(Color.red);
+		g2.fillRect(roulette.x, roulette.y, roulette.width, roulette.height);
+		g2.fillRect(plinko.x, plinko.y, plinko.width, plinko.height);
+		g2.fillRect(blackjack.x, blackjack.y, blackjack.width, blackjack.height);
+		g2.setColor(Color.black);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
+		g2.drawString("CASINO", 250, 100);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+		g2.drawString("Roulette", 115, 550);
+		g2.drawString("Plinko", 325, 550);
+		g2.drawString("Blackjack", 510, 550);
+		}
+		
+		//if roulette is true, and this.repaint is triggered, will make the design for the roulette game
+		if (rouletteChoice == true) {
+			
+		}
+
 	}
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// use math to figure out the row and column that was clicked.
+		if (roulette.contains(getMousePosition())) {
+			rouletteChoice = true;
+			mainMenu = false;
+			this.repaint();
+		}
+		else if (plinko.contains(getMousePosition())) {
+			rouletteChoice = true;
+			mainMenu = false;
+			this.repaint();
+		}
+		else if (blackjack.contains(getMousePosition())) {
+			rouletteChoice = true;
+			mainMenu = false;
+			this.repaint();
+		}
 		
-	
 	}
 	
 	public void printBoard(){
@@ -50,8 +94,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
 	@Override
