@@ -85,11 +85,12 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			String imagePath = "images/rouletteWheel.png";				// Change this line if you want to use a different 
 			URL imageURL = cldr.getResource(imagePath);				// background image.  The image should be saved in the
 			ImageIcon image = new ImageIcon(imageURL);				// images directory.
-			image.paintIcon(this, g2, 300, 300);
+			image.paintIcon(this, g2, 220, 290);
 			System.out.println(image);
 			System.out.println(imageURL);
+			
+	
 		}
-
 	}
 
 
