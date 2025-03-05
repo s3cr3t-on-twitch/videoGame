@@ -27,7 +27,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
     boolean slotsChoice = false;
     boolean blackjackChoice = false;
     String rouletteColor = "test";
-    String rouletteBet = "test";
+    String rouletteBet = "nothing yet, press a button and spin";
 
     int balance = 1000;
     
@@ -81,7 +81,6 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
     }
 
     private void updateBalance() {
-        // Fix the random assignment of roulette color
         double randomNumber = Math.random();
         if (randomNumber < 0.47) {
             rouletteColor = "RED"; // 47% chance for RED
@@ -96,12 +95,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
         } else if (rouletteColor.equals("RED") && rouletteBet.equals("RED")) {
             balance *= 2;  // Double balance on RED win
         } else if (rouletteColor.equals("GREEN") && rouletteBet.equals("GREEN")) {
-            balance *= 10;  // 10x balance on GREEN win
+            balance *= 18;  // 10x balance on GREEN win
         } else {
             balance /= 2;  // Halve the balance on a loss
         }
 
-        // Print the result for debugging purposes
         System.out.println("Spun: " + rouletteColor + ", Bet: " + rouletteBet + ", New balance: " + balance);
     }
 
@@ -141,7 +139,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
             g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
             g2.drawString("ROULETTE", 250, 100);
             g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-            g2.drawString("R,B,G, to place bet, SPACE to spin", 225, 550);
+            g2.drawString("R,B,G, to place bet, SPACE to spin", 225, 575);
+            g2.drawString("Betting on " + rouletteBet, 225, 600);
+            
             g2.drawString("$$$ = " + String.valueOf(balance), 500, 20);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
 
@@ -220,10 +220,16 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
             timer.start(); 
         } else if (keyCode == KeyEvent.VK_R) {
             rouletteBet = "RED";
+            this.repaint();
+            
         } else if (keyCode == KeyEvent.VK_B) {
             rouletteBet = "BLACK";
+            this.repaint();
+
         } else if (keyCode == KeyEvent.VK_G) {
             rouletteBet = "GREEN";
+            this.repaint();
+
         }
     }
 
