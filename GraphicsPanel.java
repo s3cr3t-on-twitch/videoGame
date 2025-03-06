@@ -14,11 +14,9 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.Timer;
 
+@SuppressWarnings("serial")
 public class GraphicsPanel extends JPanel implements MouseListener, KeyListener {
 
-	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
-	private final int OFFSET = 5;
-	private boolean click;   				// false until the game has started by somebody clicking on the board.  should also be set to false
 	private Rectangle roulette;  
 	private Rectangle slotmachine;      
 	private Rectangle blackjack;  
@@ -27,8 +25,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 	boolean rouletteChoice = false;
 	boolean slotsChoice = false;
 	boolean blackjackChoice = false;
-	String rouletteColor = "test";
-	String rouletteBet = "nothing yet, press a button and spin";
+	String rouletteColor = "";
+	String rouletteBet = "empty";
 
 	int balance = 1000;
 
@@ -42,7 +40,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 	boolean updatedBalance = false;  
 
 	public GraphicsPanel() {
-		setPreferredSize(new Dimension(SQUARE_WIDTH * 8 + OFFSET * 2, SQUARE_WIDTH * 8 + OFFSET * 2));   // Set these dimensions to the width
+		setPreferredSize(new Dimension(730, 730));   // Set these dimensions to the width
 		addMouseListener(this); // Mouse listener 
 		addKeyListener(this);   // Key listener
 		setFocusable(true);
@@ -76,14 +74,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 			}
 
 			if (!isSpinning && !updatedBalance) {  
-				updateBalance();
+				updateBalanceR();
 				updatedBalance = true; 
 				repaint();  
 			}
 		});
 	}
-
-	private void updateBalance() {
+	//function: 
+	//description: updates the balance for 
+	//parameters: none
+	//return: none
+	private void updateBalanceR() {
 		double randomNumber = Math.random();
 		if (randomNumber < 0.47) {
 			rouletteColor = "RED"; // 47% chance for RED
@@ -113,46 +114,32 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Color darkRed = new Color(148, 34, 40); // Color dark red
-		Color feltGreen = new Color(45, 122, 42); //Color the same as green felt
-
-
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Draw the main menu if it's the main menu state
-		if (balance == 0) {
-			mainMenu = false;
-			slotsChoice = false;
-			blackjackChoice = false;
-			g2.setColor(Color.BLACK);
-			g2.fillRect(-10, -10, 999, 999);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
-			g2.setColor(Color.red);
-			g2.drawString("YOU LOSE", 100, 350);
-		}
-		 if (mainMenu) {
+		
+		 if (mainMenu && balance != 0) {
 			g2.setColor(darkRed);
 			g2.fillRect(-10, -10, 10000, 10000);
 			g2.setColor(Color.red);
 			g2.fillRect(roulette.x, roulette.y, roulette.width, roulette.height);
 			g2.fillRect(slotmachine.x, slotmachine.y, slotmachine.width, slotmachine.height);
 			g2.fillRect(blackjack.x, blackjack.y, blackjack.width, blackjack.height);
-			g2.fillRect(mainMenuButton.x, mainMenuButton.y, mainMenuButton.width, mainMenuButton.height);
 
 			g2.setColor(Color.black);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
-			g2.drawString("CASINO", 250, 100);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 175)); 
+			g2.drawString("CASINO", 40, 350);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
 			g2.drawString("Roulette", 115, 550);
 			g2.drawString("Slots", 325, 550);
 			g2.drawString("Blackjack", 510, 550);
-			g2.drawString("Main Menu", 50, 100);
 
 
 			g2.drawString("$$$ = " + String.valueOf(balance), 500, 20);
 		}
 
 		// If roulette is selected, draw the roulette game screen
-		 if (rouletteChoice) {
+		 else if (rouletteChoice && balance != 0) {
 			g2.setColor(darkRed);
 			g2.fillRect(-10, -10, 100000, 10000);
 			g2.setColor(Color.BLACK);
@@ -160,7 +147,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 			g2.drawString("ROULETTE", 250, 100);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 			g2.drawString("R,B,G, to place bet, SPACE to spin", 225, 575);
-			g2.drawString("Betting on " + rouletteBet, 225, 600);
+			g2.drawString("Betting on: " + rouletteBet, 225, 600);
 
 			g2.drawString("$$$ = " + String.valueOf(balance), 500, 20);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
@@ -190,11 +177,49 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 			} else if (rouletteColor.equals("BLACK")) {
 				g2.setColor(Color.black);
 				g2.drawString("BLACK", 300, 200);
-			} else {
+			} else if (rouletteColor.equals("GREEN")) {
 				g2.setColor(Color.green);
 				g2.drawString("GREEN", 300, 200);
 			}
+			else {
+				g2.drawString("", 300, 200);
+
+			}
 		}
+		 else if (slotsChoice == true && balance != 0) {
+			 //slots code goes here
+		 }
+		 
+		 else if (blackjackChoice == true && balance != 0) {
+			 //blackjack code goes here
+		 }
+		 
+		 else if (balance == 0) {
+			
+					mainMenu = false;
+					slotsChoice = false;
+					blackjackChoice = false;
+					g2.setColor(Color.BLACK);
+					g2.fillRect(-10, -10, 999, 999);
+					g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
+					g2.setColor(Color.red);
+					g2.drawString("YOU LOSE", 100, 350);
+				
+		 }
+		 else if (balance >= 1000000) {
+				
+				mainMenu = false;
+				slotsChoice = false;
+				blackjackChoice = false;
+				g2.setColor(Color.BLACK);
+				g2.fillRect(-10, -10, 999, 999);
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
+				g2.setColor(Color.green);
+				g2.drawString("YOU WIN", 100, 350);
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+				g2.drawString("but you also got kicked out", 100, 600);
+			
+	 }
 	}
 
 	@Override
@@ -274,6 +299,26 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 		}
 		else if (keyCode == KeyEvent.VK_9 ) {
 			balance = 0;
+			this.repaint();
+
+		}
+		else if (keyCode == KeyEvent.VK_1 ) {
+			balance += 100;
+			this.repaint();
+
+		}
+		else if (keyCode == KeyEvent.VK_2 ) {
+			balance += 1000;
+			this.repaint();
+
+		}
+		else if (keyCode == KeyEvent.VK_3 ) {
+			balance += 100000;
+			this.repaint();
+
+		}
+		else if (keyCode == KeyEvent.VK_4 ) {
+			balance += 999999999;
 			this.repaint();
 
 		}
