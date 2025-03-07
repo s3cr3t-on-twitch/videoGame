@@ -68,7 +68,6 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 					if (Math.abs(rotationAngle - targetAngle) < 1) {
 						isSpinning = false; 
 					}
-					
 					repaint();
 				}
 			}
@@ -114,21 +113,33 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Color darkRed = new Color(148, 34, 40); // Color dark red
+		Color lightRed = new Color(207, 55, 75); // Color light red
+
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Draw the main menu if it's the main menu state
-		
-		 if (mainMenu && balance != 0) {
+		if (mainMenu && balance != 0) {
+			ClassLoader cldr = this.getClass().getClassLoader();    // These five lines of code load the background picture.
+			String imagePath = "images/output-onlinepngtools.png";            // Change this line if you want to use a different 
+			URL imageURL = cldr.getResource(imagePath);                // background image.  The image should be saved in the
+			ImageIcon image = new ImageIcon(imageURL);                // images directory.
+			Image img = image.getImage();
+			int imgWidth = img.getWidth(null);
+			int imgHeight = img.getHeight(null);
+			
+
 			g2.setColor(darkRed);
 			g2.fillRect(-10, -10, 10000, 10000);
-			g2.setColor(Color.red);
+			g2.setColor(lightRed);
 			g2.fillRect(roulette.x, roulette.y, roulette.width, roulette.height);
 			g2.fillRect(slotmachine.x, slotmachine.y, slotmachine.width, slotmachine.height);
 			g2.fillRect(blackjack.x, blackjack.y, blackjack.width, blackjack.height);
+			g2.fillRect(495, 5, 100, 20);
+
+			image.paintIcon(this, g2, 20, 10);  
+			
 
 			g2.setColor(Color.black);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 175)); 
-			g2.drawString("CASINO", 40, 350);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
 			g2.drawString("Roulette", 115, 550);
 			g2.drawString("Slots", 325, 550);
@@ -139,7 +150,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 		}
 
 		// If roulette is selected, draw the roulette game screen
-		 else if (rouletteChoice && balance != 0) {
+		else if (rouletteChoice && balance != 0) {
 			g2.setColor(darkRed);
 			g2.fillRect(-10, -10, 100000, 10000);
 			g2.setColor(Color.BLACK);
@@ -148,10 +159,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 			g2.drawString("R,B,G, to place bet, SPACE to spin", 225, 575);
 			g2.drawString("Betting on: " + rouletteBet, 225, 600);
-
+			g2.setColor(lightRed);
+			g2.fillRect(495, 5, 100, 20);
+			g2.setColor(Color.BLACK);
 			g2.drawString("$$$ = " + String.valueOf(balance), 500, 20);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g2.setColor(Color.red);
+			g2.setColor(lightRed);
 			g2.fillRect(mainMenuButton.x, mainMenuButton.y, mainMenuButton.width, mainMenuButton.height);
 			g2.setColor(Color.black);
 			g2.drawString("Main Menu", 50, 100);
@@ -186,40 +199,40 @@ public class GraphicsPanel extends JPanel implements MouseListener, KeyListener 
 
 			}
 		}
-		 else if (slotsChoice == true && balance != 0) {
-			 //slots code goes here
-		 }
-		 
-		 else if (blackjackChoice == true && balance != 0) {
-			 //blackjack code goes here
-		 }
-		 
-		 else if (balance == 0) {
-			
-					mainMenu = false;
-					slotsChoice = false;
-					blackjackChoice = false;
-					g2.setColor(Color.BLACK);
-					g2.fillRect(-10, -10, 999, 999);
-					g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
-					g2.setColor(Color.red);
-					g2.drawString("YOU LOSE", 100, 350);
-				
-		 }
-		 else if (balance >= 1000000) {
-				
-				mainMenu = false;
-				slotsChoice = false;
-				blackjackChoice = false;
-				g2.setColor(Color.BLACK);
-				g2.fillRect(-10, -10, 999, 999);
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
-				g2.setColor(Color.green);
-				g2.drawString("YOU WIN", 100, 350);
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
-				g2.drawString("but you also got kicked out", 100, 600);
-			
-	 }
+		else if (slotsChoice == true && balance != 0) {
+			//slots code goes here
+		}
+
+		else if (blackjackChoice == true && balance != 0) {
+			//blackjack code goes here
+		}
+
+		else if (balance == 0) {
+
+			mainMenu = false;
+			slotsChoice = false;
+			blackjackChoice = false;
+			g2.setColor(Color.BLACK);
+			g2.fillRect(-10, -10, 999, 999);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
+			g2.setColor(Color.red);
+			g2.drawString("YOU LOSE", 100, 350);
+
+		}
+		else if (balance >= 1000000) {
+
+			mainMenu = false;
+			slotsChoice = false;
+			blackjackChoice = false;
+			g2.setColor(Color.BLACK);
+			g2.fillRect(-10, -10, 999, 999);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 100)); 
+			g2.setColor(Color.green);
+			g2.drawString("YOU WIN", 100, 350);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+			g2.drawString("but you also got kicked out", 100, 600);
+
+		}
 	}
 
 	@Override
